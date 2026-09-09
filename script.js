@@ -110,33 +110,37 @@ function moverCobra() {
 
     cobra.unshift(novaCabeca);
 
-    if (verificarColisaoCorpo() || verificarColisaoObstaculo()) {
+    let comeu = cobra[0][0] == comida[0] && cobra[0][1] == comida[1];
+
+    if (!comeu) {
+        cobra.pop();
+    }
+
+    if (verificarColisao() || verificarColisaoObstaculo()) {
         jogoAtivo = false;
         document.getElementById("status").textContent = "GAME OVER!";
+        desenharCobra();
         return;
     }
 
-    if (cobra[0][0] == comida[0] && cobra[0][1] == comida[1]) {
-
+    if (comeu) {
         placar++;
 
         const novoBloco = document.createElement("div");
         novoBloco.className = "cobra";
         document.getElementById("tabuleiro").appendChild(novoBloco);
 
-        novoObstaculo();
-        desenharObstaculos();
-
         novaComida();
+        novoObstaculo();
+
         desenharComida();
-
+        desenharObstaculos();
         mostrarPlacar();
-
-    } else {
-        cobra.pop();
     }
 
     desenharCobra();
+
+    podeMudarDirecao = true;
 }
 
 function novoObstaculo() {
@@ -262,18 +266,26 @@ function reiniciarJogo() {
 
 document.addEventListener("keydown", function(event) {
 
-    if (event.key == "ArrowLeft" && novoX == 0) { //limita a cobra de inverter sua direção
+    if (!podeMudarDirecao) {
+        return;
+    }
+
+    if (event.key == "ArrowLeft" && novoX == 0) {
         novoX = -20;
         novoY = 0;
+        podeMudarDirecao = false;
     } else if (event.key == "ArrowRight" && novoX == 0) {
         novoX = 20;
         novoY = 0;
+        podeMudarDirecao = false;
     } else if (event.key == "ArrowUp" && novoY == 0) {
         novoX = 0;
         novoY = -20;
+        podeMudarDirecao = false;
     } else if (event.key == "ArrowDown" && novoY == 0) {
         novoX = 0;
         novoY = 20;
+        podeMudarDirecao = false;
     }
 
 });

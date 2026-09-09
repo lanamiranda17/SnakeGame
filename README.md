@@ -30,7 +30,7 @@ Não é necessária nenhuma instalação.
 
 O jogo também pode ser acessado pelo GitHub Pages:
 
-**Link:** a preecher
+**Link:** https://lanamiranda17.github.io/SnakeGame/
 
 ## Informações da atividade
 
