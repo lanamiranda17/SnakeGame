@@ -15,6 +15,7 @@ let novoY = 0;
 
 let placar = 0;
 let jogoAtivo = true;
+let obstaculos = [];
 
 const blocosCobra = document.getElementsByClassName("cobra");
 const elementoComida = document.getElementById("comida");
@@ -69,7 +70,7 @@ function moverCobra() {
 
     cobra.unshift(novaCabeca);
 
-    if (verificarColisao()) {
+    if (verificarColisaoCorpo() || verificarColisaoObstaculo()) {
         jogoAtivo = false;
         document.getElementById("status").textContent = "GAME OVER!";
         return;
@@ -81,11 +82,14 @@ function moverCobra() {
 
         const novoBloco = document.createElement("div");
         novoBloco.className = "cobra";
-
         document.getElementById("tabuleiro").appendChild(novoBloco);
+
+        novoObstaculo();
+        desenharObstaculos();
 
         novaComida();
         desenharComida();
+        
         mostrarPlacar();
 
     } else {
@@ -95,11 +99,70 @@ function moverCobra() {
     desenharCobra();
 }
 
-function verificarColisao() {
+function novoObstaculo() {
+
+    let x = Math.floor(Math.random() * ((larguraTela - 40) / tamanhoBloco)) * tamanhoBloco;
+    let y = Math.floor(Math.random() * ((alturaTela - 40) / tamanhoBloco)) * tamanhoBloco;
+
+    let forma = Math.floor(Math.random() * 3);
+
+    let obstaculo;
+
+    if (forma == 0) {
+        obstaculo = [[x, y], [x + 20, y], [x + 40, y]];
+    } else if (forma == 1) {
+        obstaculo = [[x, y], [x, y + 20], [x, y + 40]];
+    } else {
+        obstaculo = [[x, y], [x + 20, y], [x, y + 20]];
+    }
+
+    obstaculos.push(obstaculo);
+}
+
+function desenharObstaculos() {
+
+    const tabuleiro = document.getElementById("tabuleiro");
+
+    const antigos = document.getElementsByClassName("obstaculo");
+
+    while (antigos.length > 0) {
+        antigos[0].remove();
+    }
+
+    for (let i = 0; i < obstaculos.length; i++) {
+        for (let j = 0; j < obstaculos[i].length; j++) {
+
+            const bloco = document.createElement("div");
+            bloco.className = "obstaculo";
+
+            bloco.style.left = obstaculos[i][j][0] + "px";
+            bloco.style.top = obstaculos[i][j][1] + "px";
+
+            tabuleiro.appendChild(bloco);
+        }
+    }
+}
+
+function verificarColisaoCorpo() {
 
     for (let i = 1; i < cobra.length; i++) {
         if (cobra[0][0] == cobra[i][0] && cobra[0][1] == cobra[i][1]) {
             return true;
+        }
+    }
+
+    return false;
+}
+
+function verificarColisaoObstaculo() {
+
+    for (let i = 0; i < obstaculos.length; i++) {
+        for (let j = 0; j < obstaculos[i].length; j++) {
+
+            if (cobra[0][0] == obstaculos[i][j][0] &&
+                cobra[0][1] == obstaculos[i][j][1]) {
+                return true;
+            }
         }
     }
 
@@ -128,9 +191,15 @@ function reiniciarJogo() {
         blocosCobra[blocosCobra.length - 1].remove();
     }
 
+    obstaculos = [];
+    novoObstaculo();
+    novoObstaculo();
+    novoObstaculo();
+
     novaComida();
     desenharCobra();
     desenharComida();
+    desenharObstaculos();
     mostrarPlacar();
 
     document.getElementById("status").textContent = "";
@@ -154,9 +223,14 @@ document.addEventListener("keydown", function(event) {
 
 });
 
+novoObstaculo();
+novoObstaculo();
+novoObstaculo();
 novaComida();
+
 desenharCobra();
 desenharComida();
+desenharObstaculos();
 mostrarPlacar();
 
 setInterval(moverCobra, 100); //executa moverCobra() a cada 100ms

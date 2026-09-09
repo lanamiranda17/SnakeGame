@@ -39,6 +39,14 @@ header {
     font-size: 20px;
 }
 
+.obstaculo {
+    width: 12px;
+    height: 12px;
+    background-color: white;
+    border: 4px solid lightgray;
+    position: absolute;
+}
+
 button {
     background-color: white;
     color: black;
