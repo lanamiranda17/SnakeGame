@@ -18,6 +18,21 @@ header {
     background-color: black;
     border: 2px solid white;
     margin: 20px auto;
+    position: relative;
+}
+
+.cobra {
+    width: 20px;
+    height: 20px;
+    background-color: green;
+    position: absolute;
+}
+
+#comida {
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    position: absolute;
 }
 
 #placar {
