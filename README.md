@@ -1,6 +1,6 @@
-# Snake Game 🐍
+# Jogo da Cobrinha 🐍
 
-Jogo da cobrinha desenvolvido para a Atividade Prática 1 da disciplina GAC116 - Programação Web.
+Jogo desenvolvido para a Atividade Prática 1 da disciplina GAC116 - Programação Web.
 
 ## Objetivo
 
@@ -28,9 +28,7 @@ Não é necessária nenhuma instalação.
 1. Baixe ou clone este repositório.
 2. Abra o arquivo `index.html` em um navegador.
 
-O jogo também pode ser acessado pelo GitHub Pages:
-
-**Link:** https://lanamiranda17.github.io/SnakeGame/
+O jogo também pode ser acessado pelo **GitHub Pages**: https://lanamiranda17.github.io/SnakeGame/
 
 ## Informações da atividade
 
