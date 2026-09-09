@@ -13,6 +13,8 @@ let comida = [400, 200];
 let novoX = 20;
 let novoY = 0;
 
+let placar = 0;
+
 const blocosCobra = document.getElementsByClassName("cobra");
 const elementoComida = document.getElementById("comida");
 
@@ -30,6 +32,15 @@ function desenharComida() {
 
     elementoComida.style.left = comida[0] + "px";
     elementoComida.style.top = comida[1] + "px";
+}
+
+function novaComida() {
+
+    let x = Math.floor(Math.random() * (larguraTela / tamanhoBloco)) * tamanhoBloco;
+    let y = Math.floor(Math.random() * (alturaTela / tamanhoBloco)) * tamanhoBloco;
+
+    comida = [x, y];
+
 }
 
 function moverCobra() {
@@ -52,9 +63,30 @@ function moverCobra() {
     }
 
     cobra.unshift(novaCabeca);
-    cobra.pop();
+
+    if (cobra[0][0] == comida[0] && cobra[0][1] == comida[1]) {
+
+        placar++;
+
+        const novoBloco = document.createElement("div");
+        novoBloco.className = "cobra";
+
+        document.getElementById("tabuleiro").appendChild(novoBloco);
+
+        novaComida();
+        desenharComida();
+        mostrarPlacar();
+        
+    } else {
+        cobra.pop();
+    }
 
     desenharCobra();
+
+}
+
+function mostrarPlacar() {
+    document.getElementById("placar").textContent = "Pontos: " + placar;
 
 }
 
