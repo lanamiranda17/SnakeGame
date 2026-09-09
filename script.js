@@ -14,6 +14,7 @@ let novoX = 20;
 let novoY = 0;
 
 let placar = 0;
+let jogoAtivo = true;
 
 const blocosCobra = document.getElementsByClassName("cobra");
 const elementoComida = document.getElementById("comida");
@@ -45,6 +46,10 @@ function novaComida() {
 
 function moverCobra() {
 
+    if (!jogoAtivo) {
+        return;
+    }
+
     let novaCabeca = [
         cobra[0][0] + novoX,
         cobra[0][1] + novoY
@@ -64,6 +69,12 @@ function moverCobra() {
 
     cobra.unshift(novaCabeca);
 
+    if (verificarColisao()) {
+        jogoAtivo = false;
+        document.getElementById("status").textContent = "GAME OVER!";
+        return;
+    }
+
     if (cobra[0][0] == comida[0] && cobra[0][1] == comida[1]) {
 
         placar++;
@@ -76,18 +87,53 @@ function moverCobra() {
         novaComida();
         desenharComida();
         mostrarPlacar();
-        
+
     } else {
         cobra.pop();
     }
 
     desenharCobra();
+}
 
+function verificarColisao() {
+
+    for (let i = 1; i < cobra.length; i++) {
+        if (cobra[0][0] == cobra[i][0] && cobra[0][1] == cobra[i][1]) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 function mostrarPlacar() {
     document.getElementById("placar").textContent = "Pontos: " + placar;
 
+}
+
+function reiniciarJogo() {
+
+    cobra = [
+        [200, 200],
+        [180, 200],
+        [160, 200]
+    ];
+
+    novoX = 20;
+    novoY = 0;
+    placar = 0;
+    jogoAtivo = true;
+
+    while (blocosCobra.length > 3) {
+        blocosCobra[blocosCobra.length - 1].remove();
+    }
+
+    novaComida();
+    desenharCobra();
+    desenharComida();
+    mostrarPlacar();
+
+    document.getElementById("status").textContent = "";
 }
 
 document.addEventListener("keydown", function(event) {
@@ -108,7 +154,9 @@ document.addEventListener("keydown", function(event) {
 
 });
 
+novaComida();
 desenharCobra();
 desenharComida();
+mostrarPlacar();
 
 setInterval(moverCobra, 100); //executa moverCobra() a cada 100ms
