@@ -21,13 +21,24 @@ const blocosCobra = document.getElementsByClassName("cobra");
 const elementoComida = document.getElementById("comida");
 
 function desenharCobra() {
-
     for (let i = 0; i < cobra.length; i++) {
-        blocosCobra[i].style.left = cobra[i][0] + "px";
-        blocosCobra[i].style.top = cobra[i][1] + "px";
+        let tamanho = tamanhoBloco - i;
 
+        if (tamanho < 6) {
+            tamanho = 6;
+        }
+
+        let ajuste = (tamanhoBloco - tamanho) / 2;
+
+        blocosCobra[i].style.left = cobra[i][0] + ajuste + "px";
+        blocosCobra[i].style.top = cobra[i][1] + ajuste + "px";
+        blocosCobra[i].style.width = tamanho + "px";
+        blocosCobra[i].style.height = tamanho + "px";
+
+        blocosCobra[i].className = "cobra";
     }
 
+    blocosCobra[0].className = "cobra cabeca";
 }
 
 function desenharComida() {
@@ -36,10 +47,39 @@ function desenharComida() {
     elementoComida.style.top = comida[1] + "px";
 }
 
-function novaComida() {
+function posicaoNaCobra(x, y) {
+    for (let i = 0; i < cobra.length; i++) {
+        if (cobra[i][0] == x && cobra[i][1] == y) {
+            return true;
+        }
+    }
+    return false;
+}
 
-    let x = Math.floor(Math.random() * (larguraTela / tamanhoBloco)) * tamanhoBloco;
-    let y = Math.floor(Math.random() * (alturaTela / tamanhoBloco)) * tamanhoBloco;
+function posicaoNosObstaculos(x, y) {
+    for (let i = 0; i < obstaculos.length; i++) {
+        for (let j = 0; j < obstaculos[i].length; j++) {
+            if (obstaculos[i][j][0] == x && obstaculos[i][j][1] == y) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function novaComida() {
+    let posicaoValida = false;
+    let x;
+    let y;
+
+    while (!posicaoValida) {
+        x = Math.floor(Math.random() * (larguraTela / tamanhoBloco)) * tamanhoBloco;
+        y = Math.floor(Math.random() * (alturaTela / tamanhoBloco)) * tamanhoBloco;
+
+        if (!posicaoNaCobra(x, y) && !posicaoNosObstaculos(x, y)) {
+            posicaoValida = true;
+        }
+    }
 
     comida = [x, y];
 
@@ -89,7 +129,7 @@ function moverCobra() {
 
         novaComida();
         desenharComida();
-        
+
         mostrarPlacar();
 
     } else {
@@ -100,20 +140,35 @@ function moverCobra() {
 }
 
 function novoObstaculo() {
-
-    let x = Math.floor(Math.random() * ((larguraTela - 40) / tamanhoBloco)) * tamanhoBloco;
-    let y = Math.floor(Math.random() * ((alturaTela - 40) / tamanhoBloco)) * tamanhoBloco;
-
-    let forma = Math.floor(Math.random() * 3);
-
     let obstaculo;
+    let posicaoValida = false;
 
-    if (forma == 0) {
-        obstaculo = [[x, y], [x + 20, y], [x + 40, y]];
-    } else if (forma == 1) {
-        obstaculo = [[x, y], [x, y + 20], [x, y + 40]];
-    } else {
-        obstaculo = [[x, y], [x + 20, y], [x, y + 20]];
+    while (!posicaoValida) {
+        let x = Math.floor(Math.random() * ((larguraTela - 40) / tamanhoBloco)) * tamanhoBloco;
+        let y = Math.floor(Math.random() * ((alturaTela - 40) / tamanhoBloco)) * tamanhoBloco;
+
+        let forma = Math.floor(Math.random() * 3);
+
+        if (forma == 0) {
+            obstaculo = [[x, y], [x + 20, y], [x + 40, y]];
+        } else if (forma == 1) {
+            obstaculo = [[x, y], [x, y + 20], [x, y + 40]];
+        } else {
+            obstaculo = [[x, y], [x + 20, y], [x, y + 20]];
+        }
+
+        posicaoValida = true;
+
+        for (let i = 0; i < obstaculo.length; i++) {
+            let blocoX = obstaculo[i][0];
+            let blocoY = obstaculo[i][1];
+
+            if (posicaoNaCobra(blocoX, blocoY) ||
+                posicaoNosObstaculos(blocoX, blocoY) ||
+                (blocoX == comida[0] && blocoY == comida[1])) {
+                posicaoValida = false;
+            }
+        }
     }
 
     obstaculos.push(obstaculo);

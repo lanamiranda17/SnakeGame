@@ -1,7 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 body {
     font-family: Arial, sans-serif;
-    background-color: black;
-    color: white;
+    background-color: #0f1f14;
+    color:white;
+}
+
+h1, button, #placar, #status {
+    font-family: "Press Start 2P", cursive;
 }
 
 .conteiner {
@@ -16,7 +22,8 @@ header {
     width: 700px;
     height: 500px;
     background-color: black;
-    border: 2px solid white;
+    border: 3px solid #016601;
+    border-radius: 8px;
     margin: 20px auto;
     position: relative;
 }
@@ -24,14 +31,24 @@ header {
 .cobra {
     width: 20px;
     height: 20px;
-    background-color: green;
+    background-color: #00ff00;
+    border: 3px solid #009600;
+    box-sizing: border-box;
+    border-radius: 4px;
     position: absolute;
+}
+
+.cabeca {
+    border-radius: px;
 }
 
 #comida {
     width: 20px;
     height: 20px;
     background-color: red;
+    border: 3px solid darkred;
+    border-radius: 45%;
+    box-sizing: border-box;
     position: absolute;
 }
 
@@ -44,6 +61,7 @@ header {
     height: 12px;
     background-color: white;
     border: 4px solid lightgray;
+    border-radius: 3px;
     position: absolute;
 }
 
@@ -61,5 +79,8 @@ button:hover {
 }
 
 footer {
-    margin-top: 20px;
+    margin-top: 50px;
+    padding: 15px;
+    background-color: #1d2c21;
+    color: #b8c9bc;
 }
