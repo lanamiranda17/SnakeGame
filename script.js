@@ -116,7 +116,7 @@ function moverCobra() {
         cobra.pop();
     }
 
-    if (verificarColisao() || verificarColisaoObstaculo()) {
+    if (verificarColisaoCorpo() || verificarColisaoObstaculo()) {
         jogoAtivo = false;
         document.getElementById("status").textContent = "GAME OVER!";
         desenharCobra();
